@@ -1,0 +1,88 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ML_Select</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="ML_Select.js"></script>
+  <script src="jquery.hammer.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script>
+    $(document).ready(function(){
+      $('#S1').ML_Select({
+        width: 150,
+        height: 300
+      });
+      $('#S2').ML_Select({
+        width: 200,
+        height: 350,
+        middle: true
+      });
+      $('#S3').ML_Select({
+        width: 200,
+        height: 400,
+        oHeight: 60
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <select id="S1" class="select">
+      <option>option 1</option>
+      <option>option 2</option>
+      <option>option 3</option>
+      <option>option 4</option>
+      <option>option 5</option>
+      <option selected="selected">option 6</option>
+      <option>option 7</option>
+      <option>option 8</option>
+      <option>option 9</option>
+      <option>option 10</option>
+    </select>
+    <select id="S2" class="select">
+      <option>option 1</option>
+      <option>option 2</option>
+      <option>option 3</option>
+      <option>option 4</option>
+      <option>option 5</option>
+      <option>option 6</option>
+      <option>option 7</option>
+      <option>option 8</option>
+      <option>option 9</option>
+      <option>option 10</option>
+      <option>option 11</option>
+      <option>option 12</option>
+      <option>option 13</option>
+      <option>option 14</option>
+      <option>option 15</option>
+      <option>option 16</option>
+      <option>option 17</option>
+      <option>option 18</option>
+      <option>option 19</option>
+      <option>option 20</option>
+    </select>
+    <select id="S3">
+      <option>option 1</option>
+      <option>option 2</option>
+      <option>option 3</option>
+      <option>option 4</option>
+      <option>option 5</option>
+      <option>option 6</option>
+      <option>option 7</option>
+      <option>option 8</option>
+      <option>option 9</option>
+      <option>option 10</option>
+      <option>option 11</option>
+      <option>option 12</option>
+      <option>option 13</option>
+      <option>option 14</option>
+      <option>option 15</option>
+      <option>option 16</option>
+      <option>option 17</option>
+      <option>option 18</option>
+      <option>option 19</option>
+      <option>option 20</option>
+    </select>
+  </div>
+</body>
+</html>
