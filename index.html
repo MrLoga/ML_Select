@@ -22,6 +22,16 @@
         height: 400,
         oHeight: 60
       });
+
+      $('#S1').change(function(){
+        $('#s1').val($(this).val());
+      });
+      $('#S2').change(function(){
+        $('#s2').val($(this).val());
+      });
+      $('#S3').change(function(){
+        $('#s3').val($(this).val());
+      });
     });
   </script>
 </head>
@@ -83,6 +93,12 @@
       <option>option 19</option>
       <option>option 20</option>
     </select>
+  </div>
+  <div id="console">
+    <h2>.change()</h2>
+    S1 <input id="s1">
+    S2 <input id="s2">
+    S3 <input id="s3">
   </div>
 </body>
 </html>

@@ -27,7 +27,7 @@
 
     wrapOption.prototype.changeY = function(sel) {
       this.sel = sel;
-      $('#' + this.id).prop("selectedIndex",sel);
+      
       
       if(s.middle){
         this.y = -(this.oHeight * sel) + this.middle;
@@ -49,6 +49,10 @@
         $('#ML_' + this.id + '_' + this.num + '_' + q).css('opacity', '0.'+ opac);  
       }
       $('#ML_' + this.id + '_' + this.num + '_' + this.sel).css('opacity', '1');
+    };
+
+    wrapOption.prototype.change = function(sel){
+      $('#' + this.id).prop("selectedIndex",sel).change();
     };
 
     return this.each(function(i) {    
@@ -177,6 +181,7 @@
               newSel = 0;
             }
             arrSelect[num].changeY(newSel);
+            arrSelect[num].change(newSel);
             arrSelect[num].opacity(newSel);
             
             break;

@@ -100,3 +100,22 @@ html,body {margin:0;padding:0;}
   background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(211,211,211,1) 1%,rgba(181,181,181,1) 99%,rgba(150,150,150,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#969696',GradientType=0 ); /* IE6-8 */
 }
+
+
+#console {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 200px;
+  height: 150px;
+  padding: 20px;
+  text-align: center;
+  background: #f0f0f0;
+  box-shadow: 0 0 5px #aaa;
+}
+#console input {
+  border: 0;
+  box-shadow: 0 0 2px #aaa;
+  width: 160px;
+  margin: 0 0 10px;
+}
