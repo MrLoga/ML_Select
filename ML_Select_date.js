@@ -27,8 +27,6 @@
 
     wrapOption.prototype.changeY = function(sel) {
       this.sel = sel;
-      
-      
       if(s.middle){
         this.y = -(this.oHeight * sel) + this.middle;
       }else{
@@ -55,7 +53,7 @@
       $('#' + this.id).prop("selectedIndex",sel).change();
     };
 
-    return this.each(function(i) {    
+    return this.each(function(i) { 
       
       var
         _this = $(this),
@@ -67,6 +65,7 @@
         item = $(document.createElement('div')),
         middle = s.height / 2 - s.oHeight / 2,
         optionsSum = this.options.length;
+        console.log(optionsSum);
 
       ML_wrap.prop({id: 'ML_' + this.id + '_' + num, class: 'ML_' + className});
       ML_wrap.css({height: s.height, width: s.width, overflow: 'hidden'});
@@ -103,7 +102,7 @@
             oldT = 'touch';
             break;
           case 'drag':
-            console.log($(this).offset().top  + ' - ' + $(ML_wrap).offset().top  + ' + (' + touches.pageY  + ' - ' + oldY  + ')');
+            // console.log($(this).offset().top  + ' - ' + $(ML_wrap).offset().top  + ' + (' + touches.pageY  + ' - ' + oldY  + ')');
             shift = $(this).offset().top - $(ML_wrap).offset().top + (touches.pageY - oldY);
             if(s.middle){
               if(shift>middle){

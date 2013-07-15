@@ -1,88 +1,132 @@
-(function( $ ){
+function ML_Select_up(set){
 
-  $.fn.ML_Select = function( options ) {  
-
-    var s = $.extend( {
-      'width'  : 80,
-      'height' : 350,
-      'oHeight': 40,
-      'transformTiming': 'ease',
-      'transformTime': 0.5,
-      'middle'  : false 
-    }, options);
-
-    var arrSelect = [];
-    function wrapOption(oHeight,sel,id,wrap,middle,num){
-      this.num = num;
-      this.id = id;
-      this.middle = middle;
-      this.oHeight = oHeight;
-      this.sel = sel;
-      this.wrap = wrap;
-      this.y = oHeight * sel;
-      this.changeY(this.sel);
-
-      this.opacity(this.sel);
+  var dateObj = new Date(),
+      curDay = dateObj.getDate(),
+      curMonth = dateObj.getMonth() + 1,
+      curYear = dateObj.getFullYear();
+  
+  var s = {
+      width  : 80,
+      height : 350,
+      oHeight: 40,
+      transformTiming: 'ease',
+      transformTime: 0.5,
+      middle  : true 
     };
 
-    wrapOption.prototype.changeY = function(sel) {
-      this.sel = sel;
-      
-      
-      if(s.middle){
-        this.y = -(this.oHeight * sel) + this.middle;
-      }else{
-        this.y = -(this.oHeight * sel);
+  var arrSelect = [];
+  function wrapOption(oHeight,sel,id,wrap,middle,num,optionsSum){
+    this.num = num;
+    this.id = id;
+    this.middle = middle;
+    this.oHeight = oHeight;
+    this.sel = sel;
+    this.wrap = wrap;
+    this.y = oHeight * sel;
+    this.changeY(this.sel);
+    this.optionsSum = optionsSum;
+  };
+
+  wrapOption.prototype.changeY = function(sel) {
+    this.sel = sel;
+    if(s.middle){
+      this.y = -(this.oHeight * sel) + this.middle;
+    }else{
+      this.y = -(this.oHeight * sel);
+    }
+    this.wrap.css('-webkit-transform', 'translate3d(0px, ' + this.y + 'px, 0px)');
+
+  };
+
+  wrapOption.prototype.change = function(sel){
+    $('#' + this.id).prop("selectedIndex",sel).change();
+  };
+
+  wrapOption.prototype.dataCheck = function(sel){
+    var Day=$('#'+set.day.id).val(),
+        Month=$('#'+set.month.id).val(),
+        Year=$('#'+set.year.id).val(); 
+    var newData = reWriteDate(Day, Month, Year);
+    $('#ML_optionWrap_S1_0').css('visibility', 'hidden');
+    showDate(0, newData.day);
+    $('#ML_optionWrap_S1_0').css('visibility', 'visible');
+    showDate(1, newData.month);
+    if(newData.day < Day){
+      arrSelect[0].changeY(newData.day);
+      arrSelect[0].change(newData.day);
+    }else{
+      arrSelect[0].changeY(Day-1);
+      arrSelect[0].change(Day-1);
+    }
+    if(newData.month < Month){
+      arrSelect[1].changeY(newData.month);
+      arrSelect[1].change(newData.month);
+    }else{
+      arrSelect[1].changeY(Month-1);
+      arrSelect[1].change(Month-1);
+    }
+    
+  };
+
+  function showDate(num, optionsSum){
+    $(arrSelect[num].wrap[0].children).each(function(i){
+      $(this).removeClass('none');
+      if(i>optionsSum){
+        $(this).addClass('none');
       }
-      this.wrap.css('-webkit-transform', 'translate3d(0px, ' + this.y + 'px, 0px)');
-    };
+    });
+  }
 
-    wrapOption.prototype.opacity = function(sel){
-      for(i=0;i<10;i++){
-        var q = this.sel + i;
-        var opac = 10 - i;
-        $('#ML_' + this.id + '_' + this.num + '_' + q).css('opacity', '0.'+ opac);  
+  function reWriteDate(day, month, year){
+    var days_in_month = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+    var newDay=day,
+        newMonth=month;
+
+    if ((year % 4 == 0) && (month == 2)){
+      newDay = 29;
+    }else{
+      newDay = days_in_month[month - 1];
+    }
+    if (year == curYear){
+      newMonth = curMonth;
+      if(month >= curMonth){
+        newDay = curDay;
       }
-      for(i=0;i<this.sel+1;i++){
-        var q = this.sel - i;
-        var opac = 10 - i;
-        $('#ML_' + this.id + '_' + this.num + '_' + q).css('opacity', '0.'+ opac);  
-      }
-      $('#ML_' + this.id + '_' + this.num + '_' + this.sel).css('opacity', '1');
-    };
+    }else{
+      newMonth = 12;
+    }
+    return {day: newDay-1, month: newMonth-1};
+  };
 
-    wrapOption.prototype.change = function(sel){
-      $('#' + this.id).prop("selectedIndex",sel).change();
-    };
+  var ind = 0;
+  $.each(set, function(i,data){
 
-    return this.each(function(i) {    
-      
       var
-        _this = $(this),
-        sel = $('#' + this.id + ' option:selected').index(),
-        num = i,
-        className = this.className ? this.className : 'selectDefoult',
+        _this = $('#' + data.id),
+        sel = $('#' + data.id + ' option:selected').index(),
+        num = ind,
+        className = _this[0].className ? _this[0].className : 'selectDefoult',
         ML_wrap = $(document.createElement('div')),
         wrap = $(document.createElement('div')),
         item = $(document.createElement('div')),
         middle = s.height / 2 - s.oHeight / 2,
-        optionsSum = this.options.length;
+        optionsSum = $('#' + data.id + ' option').length;
+      ind++;
 
       ML_wrap.prop({id: 'ML_' + this.id + '_' + num, class: 'ML_' + className});
-      ML_wrap.css({height: s.height, width: s.width, overflow: 'hidden'});
+      ML_wrap.css({height: s.height, width: data.width, overflow: 'hidden'});
       wrap.prop({id: 'ML_optionWrap_' + this.id + '_' + num});
       wrap.css({'-webkit-transition': '-webkit-transform ' + s.transformTime + 's ' + s.transformTiming});
 
-      arrSelect.push(new wrapOption(s.oHeight, sel ,this.id, wrap, middle, num));
-      
+      arrSelect.push(new wrapOption(s.oHeight, sel ,this.id, wrap, middle, num, optionsSum));
       for(var i=0;i<optionsSum;i++){
-        var option = item.clone().append(this.options[i].text);
-        if(this.options[i].selected){
+        var option = item.clone().append($('#' + data.id + ' option')[i].text);
+        if($('#' + data.id + ' option')[i].selected){
           option.data('selected', true);
         }
         option.prop({class: 'ML_options', id: 'ML_' + this.id + '_' + num + '_' + i});
         option.data({'id': i, 'h': s.oHeight});
-        option.css({width: s.width - 2, height: s.oHeight, margin: '0 auto'});
+        option.css({width: data.width - 2, height: s.oHeight, margin: '0 auto'});
         wrap.append(option);
       }
       
@@ -92,9 +136,10 @@
       var oldT = '';
       var shift = 0;
       var speed = 0;
+
       $(wrap).hammer({ drag_max_touches:0}).on("touch release drag swipeup swipedown", function(ev) {
         var touches = ev.gesture.touches[0];
-        $('#' + wrap[num].id + ' .ML_options').css('opacity', 1);
+        // $('#' + wrap[num].id + ' .ML_options').css('opacity', 1);
         ev.gesture.preventDefault();
         switch(ev.type){
           case 'touch':
@@ -103,7 +148,7 @@
             oldT = 'touch';
             break;
           case 'drag':
-            console.log($(this).offset().top  + ' - ' + $(ML_wrap).offset().top  + ' + (' + touches.pageY  + ' - ' + oldY  + ')');
+            // console.log($(this).offset().top  + ' - ' + $(ML_wrap).offset().top  + ' + (' + touches.pageY  + ' - ' + oldY  + ')');
             shift = $(this).offset().top - $(ML_wrap).offset().top + (touches.pageY - oldY);
             if(s.middle){
               if(shift>middle){
@@ -174,31 +219,29 @@
             }
             wrap.css({'-webkit-transition': '-webkit-transform ' + s.transformTime + 's ' + s.transformTiming});
 
-            if(newSel>= optionsSum){
-              newSel = optionsSum - 1;
+            if(newSel>= arrSelect[num].optionsSum){
+              newSel = arrSelect[num].optionsSum - 1;
             }
             if(newSel<0){
               newSel = 0;
             }
             arrSelect[num].changeY(newSel);
             arrSelect[num].change(newSel);
-            arrSelect[num].opacity(newSel);
+            arrSelect[num].dataCheck(newSel);
+            
             
             break;
         }
-    });
 
 
-      ML_wrap.append(wrap);
-      _this.after(ML_wrap);
-      arrSelect[num].opacity(sel);
-      
-      _this.hide();
+      });
+    ML_wrap.append(wrap);
+    _this.after(ML_wrap);
+    
+    _this.hide();
 
-      _this.height(s.height);
-      _this.width(s.width);
+    _this.height(s.height);
+    _this.width(data.width);
 
-    });
-
-  };
-})( jQuery );
+  });
+}
